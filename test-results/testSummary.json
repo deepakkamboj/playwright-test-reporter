@@ -1,187 +1,187 @@
 {
-  "failures": [
-    {
-      "testId": "c3df41bca23fc75d6d68-0d5d59b039b5d1946eb9",
-      "testTitle": "Verify non-existent element",
-      "suiteTitle": "Mixed test results to demonstrate reporter",
-      "errorMessage": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#non-existent-element')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#non-existent-element')\u001b[22m\n",
-      "errorStack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#non-existent-element')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#non-existent-element')\u001b[22m\n\n    at E:\\gitjan\\playwright-ci-reporter-main\\tests\\mixed-results.test.ts:30:61",
-      "duration": 6.804,
-      "owningTeam": "Performance",
-      "isTimeout": true,
-      "errorCategory": "SelectorChanged",
-      "testFile": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\mixed-results.test.ts",
-      "location": {
-        "file": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\mixed-results.test.ts",
-        "line": 20,
-        "column": 9
-      }
+    "failures": [
+        {
+            "testId": "c3df41bca23fc75d6d68-0d5d59b039b5d1946eb9",
+            "testTitle": "Verify non-existent element",
+            "suiteTitle": "Mixed test results to demonstrate reporter",
+            "errorMessage": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#non-existent-element')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#non-existent-element')\u001b[22m\n",
+            "errorStack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m()\u001b[22m\n\nLocator: locator('#non-existent-element')\nExpected: visible\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toBeVisible with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#non-existent-element')\u001b[22m\n\n    at E:\\gitjan\\playwright-ci-reporter-main\\tests\\mixed-results.test.ts:30:61",
+            "duration": 6.804,
+            "owningTeam": "Performance",
+            "isTimeout": true,
+            "errorCategory": "SelectorChanged",
+            "testFile": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\mixed-results.test.ts",
+            "location": {
+                "file": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\mixed-results.test.ts",
+                "line": 20,
+                "column": 9
+            }
+        },
+        {
+            "testId": "7dc2031a5c243dd533e1-10e0e4cbcae1a9739009",
+            "testTitle": "Search for Playwright",
+            "suiteTitle": "Google search tests",
+            "errorMessage": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator('#search')\nExpected pattern: \u001b[32m/Playwright/i\u001b[39m\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toContainText with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#search')\u001b[22m\n",
+            "errorStack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator('#search')\nExpected pattern: \u001b[32m/Playwright/i\u001b[39m\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toContainText with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#search')\u001b[22m\n\n    at E:\\gitjan\\playwright-ci-reporter-main\\tests\\google-search.test.ts:35:31",
+            "duration": 7.706,
+            "owningTeam": "Frontend",
+            "isTimeout": true,
+            "errorCategory": "SelectorChanged",
+            "testFile": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\google-search.test.ts",
+            "location": {
+                "file": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\google-search.test.ts",
+                "line": 18,
+                "column": 9
+            }
+        }
+    ],
+    "testCount": 8,
+    "passedCount": 5,
+    "skippedCount": 1,
+    "failedCount": 2,
+    "totalTimeDisplay": "9.40s",
+    "averageTime": 3.5868,
+    "slowestTest": 7.192,
+    "slowestTests": [
+        {
+            "testTitle": "Slow test - Intentional delay",
+            "duration": 7.192
+        },
+        {
+            "testTitle": "Passing test - Visit MDN web docs",
+            "duration": 5.951
+        },
+        {
+            "testTitle": "Check Google Images link",
+            "duration": 2.473
+        },
+        {
+            "testTitle": "Verify Playwright homepage title and URL",
+            "duration": 1.204
+        },
+        {
+            "testTitle": "Check Playwright docs navigation",
+            "duration": 1.114
+        }
+    ],
+    "buildInfo": {
+        "isPipeline": false,
+        "executionSystem": "Local"
     },
-    {
-      "testId": "7dc2031a5c243dd533e1-10e0e4cbcae1a9739009",
-      "testTitle": "Search for Playwright",
-      "suiteTitle": "Google search tests",
-      "errorMessage": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator('#search')\nExpected pattern: \u001b[32m/Playwright/i\u001b[39m\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toContainText with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#search')\u001b[22m\n",
-      "errorStack": "Error: \u001b[31mTimed out 5000ms waiting for \u001b[39m\u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nLocator: locator('#search')\nExpected pattern: \u001b[32m/Playwright/i\u001b[39m\nReceived: <element(s) not found>\nCall log:\n\u001b[2m  - expect.toContainText with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('#search')\u001b[22m\n\n    at E:\\gitjan\\playwright-ci-reporter-main\\tests\\google-search.test.ts:35:31",
-      "duration": 7.706,
-      "owningTeam": "Frontend",
-      "isTimeout": true,
-      "errorCategory": "SelectorChanged",
-      "testFile": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\google-search.test.ts",
-      "location": {
-        "file": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\google-search.test.ts",
-        "line": 18,
-        "column": 9
-      }
-    }
-  ],
-  "testCount": 8,
-  "passedCount": 5,
-  "skippedCount": 1,
-  "failedCount": 2,
-  "totalTimeDisplay": "9.40s",
-  "averageTime": 3.5868,
-  "slowestTest": 7.192,
-  "slowestTests": [
-    {
-      "testTitle": "Slow test - Intentional delay",
-      "duration": 7.192
-    },
-    {
-      "testTitle": "Passing test - Visit MDN web docs",
-      "duration": 5.951
-    },
-    {
-      "testTitle": "Check Google Images link",
-      "duration": 2.473
-    },
-    {
-      "testTitle": "Verify Playwright homepage title and URL",
-      "duration": 1.204
-    },
-    {
-      "testTitle": "Check Playwright docs navigation",
-      "duration": 1.114
-    }
-  ],
-  "buildInfo": {
-    "isPipeline": false,
-    "executionSystem": "Local"
-  },
-  "allTestCases": [
-    {
-      "testId": "c3df41bca23fc75d6d68-f6c777309b44f6dcc1a5",
-      "testTitle": "Skipped test - This test is intentionally skipped",
-      "suiteTitle": "Mixed test results to demonstrate reporter",
-      "testFile": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\mixed-results.test.ts",
-      "location": {
-        "file": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\mixed-results.test.ts",
-        "line": 33,
-        "column": 10
-      },
-      "outcome": "skipped",
-      "status": "skipped",
-      "owningTeam": "Unknown"
-    },
-    {
-      "testId": "a7d8663c48969366bd04-9074c19e451b41dbc552",
-      "testTitle": "Verify Playwright homepage title and URL",
-      "suiteTitle": "Playwright official website tests",
-      "testFile": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\playwright-site.test.ts",
-      "location": {
-        "file": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\playwright-site.test.ts",
-        "line": 4,
-        "column": 9
-      },
-      "outcome": "expected",
-      "status": "passed",
-      "owningTeam": "Performance"
-    },
-    {
-      "testId": "a7d8663c48969366bd04-7bcc70d8bf6ec3b22878",
-      "testTitle": "Check Playwright docs navigation",
-      "suiteTitle": "Playwright official website tests",
-      "testFile": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\playwright-site.test.ts",
-      "location": {
-        "file": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\playwright-site.test.ts",
-        "line": 23,
-        "column": 9
-      },
-      "outcome": "expected",
-      "status": "passed",
-      "owningTeam": "Performance"
-    },
-    {
-      "testId": "7dc2031a5c243dd533e1-bbe6dc1322c0a8c1a4a8",
-      "testTitle": "Check Google Images link",
-      "suiteTitle": "Google search tests",
-      "testFile": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\google-search.test.ts",
-      "location": {
-        "file": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\google-search.test.ts",
-        "line": 38,
-        "column": 9
-      },
-      "outcome": "expected",
-      "status": "passed",
-      "owningTeam": "Frontend"
-    },
-    {
-      "testId": "c3df41bca23fc75d6d68-91453f77fbfbd3757083",
-      "testTitle": "Passing test - Visit MDN web docs",
-      "suiteTitle": "Mixed test results to demonstrate reporter",
-      "testFile": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\mixed-results.test.ts",
-      "location": {
-        "file": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\mixed-results.test.ts",
-        "line": 4,
-        "column": 9
-      },
-      "outcome": "expected",
-      "status": "passed",
-      "owningTeam": "Performance"
-    },
-    {
-      "testId": "c3df41bca23fc75d6d68-0d5d59b039b5d1946eb9",
-      "testTitle": "Verify non-existent element",
-      "suiteTitle": "Mixed test results to demonstrate reporter",
-      "testFile": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\mixed-results.test.ts",
-      "location": {
-        "file": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\mixed-results.test.ts",
-        "line": 20,
-        "column": 9
-      },
-      "outcome": "unexpected",
-      "status": "failed",
-      "owningTeam": "Performance"
-    },
-    {
-      "testId": "c3df41bca23fc75d6d68-e35637272c074cc4b2ce",
-      "testTitle": "Slow test - Intentional delay",
-      "suiteTitle": "Mixed test results to demonstrate reporter",
-      "testFile": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\mixed-results.test.ts",
-      "location": {
-        "file": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\mixed-results.test.ts",
-        "line": 39,
-        "column": 9
-      },
-      "outcome": "expected",
-      "status": "passed",
-      "owningTeam": "Performance"
-    },
-    {
-      "testId": "7dc2031a5c243dd533e1-10e0e4cbcae1a9739009",
-      "testTitle": "Search for Playwright",
-      "suiteTitle": "Google search tests",
-      "testFile": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\google-search.test.ts",
-      "location": {
-        "file": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\google-search.test.ts",
-        "line": 18,
-        "column": 9
-      },
-      "outcome": "unexpected",
-      "status": "failed",
-      "owningTeam": "Frontend"
-    }
-  ],
-  "timestamp": "2025-04-11T18:46:10.678Z",
-  "runEnvironment": "Local"
+    "allTestCases": [
+        {
+            "testId": "c3df41bca23fc75d6d68-f6c777309b44f6dcc1a5",
+            "testTitle": "Skipped test - This test is intentionally skipped",
+            "suiteTitle": "Mixed test results to demonstrate reporter",
+            "testFile": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\mixed-results.test.ts",
+            "location": {
+                "file": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\mixed-results.test.ts",
+                "line": 33,
+                "column": 10
+            },
+            "outcome": "skipped",
+            "status": "skipped",
+            "owningTeam": "Unknown"
+        },
+        {
+            "testId": "a7d8663c48969366bd04-9074c19e451b41dbc552",
+            "testTitle": "Verify Playwright homepage title and URL",
+            "suiteTitle": "Playwright official website tests",
+            "testFile": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\playwright-site.test.ts",
+            "location": {
+                "file": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\playwright-site.test.ts",
+                "line": 4,
+                "column": 9
+            },
+            "outcome": "expected",
+            "status": "passed",
+            "owningTeam": "Performance"
+        },
+        {
+            "testId": "a7d8663c48969366bd04-7bcc70d8bf6ec3b22878",
+            "testTitle": "Check Playwright docs navigation",
+            "suiteTitle": "Playwright official website tests",
+            "testFile": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\playwright-site.test.ts",
+            "location": {
+                "file": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\playwright-site.test.ts",
+                "line": 23,
+                "column": 9
+            },
+            "outcome": "expected",
+            "status": "passed",
+            "owningTeam": "Performance"
+        },
+        {
+            "testId": "7dc2031a5c243dd533e1-bbe6dc1322c0a8c1a4a8",
+            "testTitle": "Check Google Images link",
+            "suiteTitle": "Google search tests",
+            "testFile": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\google-search.test.ts",
+            "location": {
+                "file": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\google-search.test.ts",
+                "line": 38,
+                "column": 9
+            },
+            "outcome": "expected",
+            "status": "passed",
+            "owningTeam": "Frontend"
+        },
+        {
+            "testId": "c3df41bca23fc75d6d68-91453f77fbfbd3757083",
+            "testTitle": "Passing test - Visit MDN web docs",
+            "suiteTitle": "Mixed test results to demonstrate reporter",
+            "testFile": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\mixed-results.test.ts",
+            "location": {
+                "file": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\mixed-results.test.ts",
+                "line": 4,
+                "column": 9
+            },
+            "outcome": "expected",
+            "status": "passed",
+            "owningTeam": "Performance"
+        },
+        {
+            "testId": "c3df41bca23fc75d6d68-0d5d59b039b5d1946eb9",
+            "testTitle": "Verify non-existent element",
+            "suiteTitle": "Mixed test results to demonstrate reporter",
+            "testFile": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\mixed-results.test.ts",
+            "location": {
+                "file": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\mixed-results.test.ts",
+                "line": 20,
+                "column": 9
+            },
+            "outcome": "unexpected",
+            "status": "failed",
+            "owningTeam": "Performance"
+        },
+        {
+            "testId": "c3df41bca23fc75d6d68-e35637272c074cc4b2ce",
+            "testTitle": "Slow test - Intentional delay",
+            "suiteTitle": "Mixed test results to demonstrate reporter",
+            "testFile": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\mixed-results.test.ts",
+            "location": {
+                "file": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\mixed-results.test.ts",
+                "line": 39,
+                "column": 9
+            },
+            "outcome": "expected",
+            "status": "passed",
+            "owningTeam": "Performance"
+        },
+        {
+            "testId": "7dc2031a5c243dd533e1-10e0e4cbcae1a9739009",
+            "testTitle": "Search for Playwright",
+            "suiteTitle": "Google search tests",
+            "testFile": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\google-search.test.ts",
+            "location": {
+                "file": "E:\\gitjan\\playwright-ci-reporter-main\\tests\\google-search.test.ts",
+                "line": 18,
+                "column": 9
+            },
+            "outcome": "unexpected",
+            "status": "failed",
+            "owningTeam": "Frontend"
+        }
+    ],
+    "timestamp": "2025-04-11T18:46:10.678Z",
+    "runEnvironment": "Local"
 }

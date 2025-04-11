@@ -5,6 +5,7 @@ import {TestUtils, Logger} from './utils';
 import {FileHandler} from './fileHandler';
 import {BuildInfoUtils} from './buildInfoUtils';
 import * as path from 'path';
+import * as fs from 'fs';
 
 /**
  * PlaywrightTestReporter is a modern, maintainable reporter for Playwright tests.
@@ -30,7 +31,6 @@ export default class PlaywrightTestReporter implements Reporter {
     private _hasInterruptedTests: boolean = false;
     private _fileHandler: FileHandler;
 
-
     /**
      * Creates a new instance of the PlaywrightTestReporter.
      *
@@ -44,7 +44,7 @@ export default class PlaywrightTestReporter implements Reporter {
             showStackTrace: config.showStackTrace ?? true,
             outputDir: config.outputDir ?? './test-results',
         };
-        
+
         this.outputDir = this._config.outputDir;
         this._fileHandler = new FileHandler(this.outputDir);
     }
@@ -63,11 +63,11 @@ export default class PlaywrightTestReporter implements Reporter {
             `${colors.fgMagentaBright}🚀 Starting test run: ${totalTestCount} tests using ${config.workers} workers${colors.reset}`,
         );
         this._startTime = Date.now();
-        
+
         // Use the output directory from reporter config
         // The outputDir is already set in the constructor, so we don't need to reset it here
         // unless there's a specific override in the config
-        
+
         // If a project-specific output directory is set, use that instead
         if (config.projects && config.projects.length > 0) {
             // Try to find an output directory in any project config
@@ -129,38 +129,41 @@ export default class PlaywrightTestReporter implements Reporter {
         if (!this._testRecords.has(title)) {
             // Create an enhanced test case with required properties
             const testCaseDetails: TestCaseDetails = {
-                testId: test.id,    
+                testId: test.id,
                 testTitle: test.title,
                 suiteTitle: test.parent?.title || 'Unknown Suite',
                 testFile: test.location?.file,
                 location: test.location,
                 outcome: test.outcome(),
                 status: TestUtils.outcomeToStatus(test.outcome()),
-                owningTeam:TestUtils.getOwningTeam(test),
+                owningTeam: TestUtils.getOwningTeam(test),
             };
-            
+
             this._testRecords.set(title, {
                 test: testCaseDetails,
-                attempts: []
+                attempts: [],
             });
         }
 
         // Update test record with new attempt
-        const testRecord = this._testRecords.get(title)!;
-        testRecord.attempts.push({
-            status: result.status,
-            duration: timeTakenSec,
-            errors: result.errors.map((e) => ({
-                message: e.message || 'No error message',
-                stack: e.stack,
-            })),
-        });
+        const testRecord = this._testRecords.get(title);
+        if (testRecord) {
+            // Fix: Added null check instead of non-null assertion
+            testRecord.attempts.push({
+                status: result.status,
+                duration: timeTakenSec,
+                errors: result.errors.map((e) => ({
+                    message: e.message || 'No error message',
+                    stack: e.stack,
+                })),
+            });
+        }
 
         // Add failures to the FileHandler
         if (result.status === 'failed' || result.status === 'timedOut') {
             const errorMessage = result.errors[0]?.message || 'Unknown error';
             const errorCategory = TestUtils.categorizeError(errorMessage);
-            
+
             this._fileHandler.addFailure({
                 testId: test.id,
                 testTitle: test.title,
@@ -216,12 +219,12 @@ export default class PlaywrightTestReporter implements Reporter {
             testCount,
             passedCount,
             skippedCount,
-            failedCount: testCount - passedCount - skippedCount,            
+            failedCount: testCount - passedCount - skippedCount,
             totalTimeDisplay,
             averageTime: TestUtils.calculateAverageTime(passedDurations),
             slowestTest: Math.max(...passedDurations, 0),
             slowestTests: TestUtils.findSlowestTests(this._testRecords, this._config.maxSlowTestsToShow),
-            buildInfo
+            buildInfo,
         };
 
         // Log results
@@ -244,11 +247,11 @@ export default class PlaywrightTestReporter implements Reporter {
         }
 
         // Extract all test case details for summary
-        const allTestCases: TestCaseDetails[] = Array.from(this._testRecords.values()).map(record => record.test);
-        
+        const allTestCases: TestCaseDetails[] = Array.from(this._testRecords.values()).map((record) => record.test);
+
         // Write summary and test details to JSON
         this._fileHandler.writeSummary(summary, allTestCases);
-        
+
         // Record last run status in a separate file
         this.saveLastRunStatus(failures.length > 0);
 
@@ -299,10 +302,11 @@ export default class PlaywrightTestReporter implements Reporter {
      */
     private _logTestOutcome(title: string, result: TestResult, timeTakenSec: number): void {
         const timeTakenFormatted = timeTakenSec.toFixed(2);
+        let passMessage: string;
 
         switch (result.status) {
             case 'passed':
-                const passMessage = result.retry > 0 ? `✅ ${title} passed after retry` : `✅ ${title}`;
+                passMessage = result.retry > 0 ? `✅ ${title} passed after retry` : `✅ ${title}`;
                 console.log(`${colors.fgGreen}${passMessage} in ${timeTakenFormatted}s${colors.reset}`);
                 break;
 
@@ -339,17 +343,15 @@ export default class PlaywrightTestReporter implements Reporter {
      */
     private saveLastRunStatus(hasFailed: boolean): void {
         const failedTests = Array.from(this._testRecords.values())
-            .filter(record => record.test.status === 'failed')
-            .map(record => record.test.testId || '');
-        
+            .filter((record) => record.test.status === 'failed')
+            .map((record) => record.test.testId || '');
+
         const lastRunData = {
             status: hasFailed ? 'failed' : 'passed',
-            failedTests
+            failedTests,
         };
 
         try {
-            const fs = require('fs');
-            const path = require('path');
             const filePath = path.join(this.outputDir, '.last-run.json');
             fs.writeFileSync(filePath, JSON.stringify(lastRunData, null, 2));
         } catch (error) {

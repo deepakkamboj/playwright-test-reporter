@@ -1,4 +1,4 @@
-import {TestRecord, TestSummary, SlowTest, TestFailure} from './types';
+import {TestRecord, TestSummary, SlowTest, TestFailure, BuildInfo} from './types';
 import {colors} from './colors';
 import {TestCase} from '@playwright/test/reporter';
 
@@ -129,11 +129,16 @@ export class TestUtils {
      */
     static outcomeToStatus(outcome: string): string {
         switch (outcome) {
-            case 'skipped': return 'skipped';
-            case 'expected': return 'passed';
-            case 'unexpected': return 'failed';
-            case 'flaky': return 'failed';
-            default: return outcome;
+            case 'skipped':
+                return 'skipped';
+            case 'expected':
+                return 'passed';
+            case 'unexpected':
+                return 'failed';
+            case 'flaky':
+                return 'failed';
+            default:
+                return outcome;
         }
     }
 
@@ -144,18 +149,18 @@ export class TestUtils {
      */
     static getOwningTeam(test: TestCase): string {
         const testName = test.title || '';
-        for (let team in Team) {
+        for (const team in Team) {
             if (testName.includes(this.wrap(team))) {
                 return team;
             }
         }
 
-        const teamName = test.annotations.find(a => a.type === 'team')?.description;
+        const teamName = test.annotations.find((a) => a.type === 'team')?.description;
         if (teamName && teamName in Team) {
             return teamName;
         }
 
-        const ownerName = test.annotations.find(a => a.type === 'owner')?.description;
+        const ownerName = test.annotations.find((a) => a.type === 'owner')?.description;
         if (ownerName && ownerName in Team) {
             return ownerName;
         }
@@ -166,7 +171,7 @@ export class TestUtils {
 
         return FallbackTeam;
     }
-    
+
     /**
      * Helper method to wrap a string for team name matching
      * @param text - Text to wrap
@@ -219,7 +224,7 @@ export class TestUtils {
                     errorMessage: errorMessage,
                     errorStack: combinedStack,
                     duration: finalAttempt.duration,
-                    owningTeam: test.owningTeam || "Unknown Team",
+                    owningTeam: test.owningTeam || 'Unknown Team',
                     isTimeout,
                     errorCategory,
                     testFile: test.testFile,
@@ -233,13 +238,13 @@ export class TestUtils {
                 const errorCategory = this.categorizeError(errorMessage);
 
                 failures.push({
-                    testId: test.testId,    
+                    testId: test.testId,
                     testTitle: test.testTitle,
                     suiteTitle: test.suiteTitle || 'Unknown Suite',
                     errorMessage: errorMessage,
                     errorStack: '',
                     duration: finalAttempt.duration,
-                    owningTeam: test.owningTeam || "Unknown Team",
+                    owningTeam: test.owningTeam || 'Unknown Team',
                     isTimeout: false,
                     errorCategory,
                     testFile: test.testFile,
@@ -313,44 +318,48 @@ export class Logger {
 
     /**
      * Logs build information if available
-     * 
+     *
      * @param buildInfo - The build information to log
      */
-    static logBuildInfo(buildInfo: any): void {
-        if (!buildInfo.isCI) {
+    static logBuildInfo(buildInfo: BuildInfo): void {
+        if (!buildInfo.isPipeline) {
             console.log(`${colors.fgMagenta}🖥️ Running locally${colors.reset}`);
             return;
         }
 
         console.log(`${colors.fgMagenta}\nBuild Information:${colors.reset}`);
-        console.log(`${colors.fgMagenta}- CI System: ${buildInfo.ciSystem || 'Unknown CI'}${colors.reset}`);
-        
+        console.log(`${colors.fgMagenta}- CI System: ${buildInfo.executionSystem || 'Unknown CI'}${colors.reset}`);
+
         if (buildInfo.buildNumber) {
             console.log(`${colors.fgMagenta}- Build: ${buildInfo.buildNumber}${colors.reset}`);
         }
-        
+
         if (buildInfo.buildBranch) {
             console.log(`${colors.fgMagenta}- Branch: ${buildInfo.buildBranch}${colors.reset}`);
         }
-        
+
         if (buildInfo.commitId) {
             console.log(`${colors.fgMagenta}- Commit: ${buildInfo.commitId.substring(0, 8)}${colors.reset}`);
         }
-        
+
+        if (buildInfo.commitId) {
+            console.log(`${colors.fgMagenta}- Commit: ${buildInfo.commitId.substring(0, 8)}${colors.reset}`);
+        }
+
         if (buildInfo.buildLink) {
             console.log(`${colors.fgMagenta}- Build link: ${buildInfo.buildLink}${colors.reset}`);
         }
-        
+
         if (buildInfo.artifactsLink) {
             console.log(`${colors.fgMagenta}- Artifacts: ${buildInfo.artifactsLink}${colors.reset}`);
         }
-        
+
         // Only show test link for Azure Pipelines, as this is specific to that system
-        if (buildInfo.testLink && buildInfo.ciSystem === 'Azure Pipelines') {
+        if (buildInfo.testLink && buildInfo.executionSystem === 'Azure Pipelines') {
             console.log(`${colors.fgMagenta}- Test Results: ${buildInfo.testLink}${colors.reset}`);
         }
 
-        if (buildInfo.commitLink && buildInfo.ciSystem === 'GitHub Actions') {
+        if (buildInfo.commitLink && buildInfo.executionSystem === 'GitHub Actions') {
             console.log(`${colors.fgMagenta}- Commit: ${buildInfo.commitLink}${colors.reset}`);
         }
     }
@@ -371,7 +380,8 @@ export class Logger {
 
             summary.slowestTests.forEach((test, index) => {
                 console.log(
-                    `  ${index + 1}. ${test.testTitle}: ` + `${colors.fgYellow}${test.duration.toFixed(2)}s${colors.reset}`,
+                    `  ${index + 1}. ${test.testTitle}: ` +
+                        `${colors.fgYellow}${test.duration.toFixed(2)}s${colors.reset}`,
                 );
             });
         }
