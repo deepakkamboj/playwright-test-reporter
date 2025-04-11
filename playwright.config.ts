@@ -13,6 +13,8 @@ export default defineConfig({
     workers: process.env.CI ? 1 : undefined,
     reporter: [
         ['list'],
+        // Use the built-in HTML reporter
+        ['html', {outputFolder: 'test-results/html-report', open: 'never'}],
         // Use our custom reporter
         [
             './src/reporter.ts',
@@ -22,6 +24,7 @@ export default defineConfig({
                 timeoutWarningThreshold: 20,
                 showStackTrace: true,
                 outputDir: './test-results',
+                generateFix: true,
             },
         ],
     ],

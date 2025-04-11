@@ -12,12 +12,19 @@
         }
     },
     "dependencies": {
+        "@types/babel-code-frame": "^6.20.8",
+        "axios": "^1.6.5",
+        "dotenv": "^16.3.1",
         "essential-common-utils": "^1.6.0",
         "winston": "^3.17.0"
     },
     "devDependencies": {
-        "@playwright/test": "^1.50.1",
+        "@babel/code-frame": "^7.21.0",
+        "@playwright/test": "^1.51",
+        "@types/babel__code-frame": "^7.0.6",
         "@types/node": "^22.13.4",
+        "@typescript-eslint/eslint-plugin": "^6.19.0",
+        "@typescript-eslint/parser": "^6.19.0",
         "eslint": "^8.56.0",
         "eslint-config-prettier": "^9.1.0",
         "eslint-plugin-prettier": "^5.0.0",
@@ -25,9 +32,7 @@
         "prettier": "^3.5.1",
         "standard-version": "^9.5.0",
         "ts-jest": "^29.2.5",
-        "typescript": "^5.7.3",
-        "@typescript-eslint/eslint-plugin": "^6.19.0",
-        "@typescript-eslint/parser": "^6.19.0"
+        "typescript": "^5.7.3"
     },
     "scripts": {
         "build": "tsc",

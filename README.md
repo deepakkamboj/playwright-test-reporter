@@ -1,25 +1,30 @@
-# **Playwright CI Reporter**
+# **Playwright Test Reporter**
 
 [![Build Status](https://github.com/deepakkamboj/playwright-test-reporter/actions/workflows/ci.yml/badge.svg)](https://github.com/deepakkamboj/playwright-test-reporter/actions/workflows/ci.yml)
 [![npm version](https://img.shields.io/npm/v/playwright-test-reporter.svg)](https://www.npmjs.com/package/playwright-test-reporter)
 [![TypeScript](https://img.shields.io/badge/TypeScript-4.9%2B-blue)](https://www.typescriptlang.org/)
-[![Playwright](https://img.shields.io/badge/Playwright-1.50%2B-green)](https://playwright.dev/)
+[![Playwright](https://img.shields.io/badge/Playwright-1.51%2B-green)](https://playwright.dev/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A modern, maintainable custom reporter for Playwright tests that enhances your test output with colorized results, comprehensive metrics, and intelligent failure analysis. Perfect for CI/CD pipelines and local development.
+An intelligent, AI-powered reporter for Playwright tests that enhances debugging with automatic failure categorization, test code extraction, and GenAI-powered fix suggestions. Perfect for tackling flaky tests and improving test reliability in CI/CD pipelines.
 
 ## **✨ Features**
 
 - 🎨 **Smart Colorized Output**:
-
     - ✅ Passed tests (Green)
     - ❌ Failed tests (Red)
     - 🔄 Retry attempts (Yellow)
     - ⚠️ Skipped tests (Gray)
     - 🚀 Test run status (Bright Magenta)
 
-- 📊 **Comprehensive Metrics**:
+- 🧠 **Intelligent Failure Analysis**:
+    - Automatic **error categorization** (ElementNotFound, Timeout, SelectorChanged, etc.)
+        - This will help identifying major area of concern through error reporting.
+    - Test code block extraction for context-aware reporting
+    - AI-powered fix suggestions for common test failures
+    - Structured JSON output for failure analysis
 
+- 📊 **Comprehensive Metrics**:
     - Total execution time with smart formatting
     - Average test duration analysis
     - Slowest test identification
@@ -27,18 +32,20 @@ A modern, maintainable custom reporter for Playwright tests that enhances your t
     - Pass/fail/skip statistics
 
 - 🛠 **Advanced Features**:
-
+    - **Generative AI** integration for intelligent fix suggestions for **Flaky tests**.
+        - Using `Mistral` based `mistral-large-latest` model for generating fixes.
+    - Accessibility snapshot support (placeholder ready)
+    - Team ownership assignment and tracking
     - Configurable slow test thresholds
     - Timeout warnings
     - Stack trace controls
     - Retry attempt tracking
     - CI integration with build information
     - Test history tracking and comparison
-    - Team ownership assignment
-    - Error categorization for failure analysis
 
-- 📝 **Intelligent Reporting**:
-    - Detailed failure analysis
+- 📝 **Rich Reporting**:
+    - Detailed failure analysis with categorization
+    - GenAI-powered fix suggestions
     - Clear error messages
     - Formatted stack traces
     - Test timing insights
@@ -66,18 +73,15 @@ import {defineConfig} from '@playwright/test';
 export default defineConfig({
     testDir: './tests', // Adjust to your test directory
     retries: 2, // Example of using retries
-    reporter: [
-        [
-            'playwright-test-reporter',
-            {
-                slowTestThreshold: 3,
-                maxSlowTestsToShow: 5,
-                timeoutWarningThreshold: 20,
-                showStackTrace: true,
-                outputDir: './test-results',
-            },
-        ],
-    ],
+    reporter: [['playwright-test-reporter', {
+        slowTestThreshold: 3,
+        maxSlowTestsToShow: 5,
+        timeoutWarningThreshold: 20,
+        showStackTrace: true,
+        outputDir: './test-results',
+        generateFix: true,               // Enable AI-powered fix suggestions
+        categorizeFailures: true         // Enable automatic failure categorization
+    }]],
     use: {
         trace: 'on-first-retry', // Example: trace only on retries
         video: 'on-first-retry',
@@ -88,13 +92,33 @@ export default defineConfig({
 
 ### **Reporter Configuration Options**
 
-| Option                    | Type      | Default          | Description                                              |
-| ------------------------- | --------- | ---------------- | -------------------------------------------------------- |
-| `slowTestThreshold`       | `number`  | `5`              | Time in seconds after which a test is considered slow    |
-| `maxSlowTestsToShow`      | `number`  | `3`              | Maximum number of slowest tests to display in the report |
-| `timeoutWarningThreshold` | `number`  | `30`             | Time in seconds after which to show a timeout warning    |
-| `showStackTrace`          | `boolean` | `true`           | Whether to show stack traces in error reports            |
-| `outputDir`               | `string`  | `./test-results` | Directory where JSON output files will be saved          |
+| Option                   | Type      | Default         | Description |
+|--------------------------|-----------|-----------------|-------------|
+| `slowTestThreshold`      | `number`  | `5`             | Time in seconds after which a test is considered slow |
+| `maxSlowTestsToShow`     | `number`  | `3`             | Maximum number of slowest tests to display in the report |
+| `timeoutWarningThreshold`| `number`  | `30`            | Time in seconds after which to show a timeout warning |
+| `showStackTrace`         | `boolean` | `true`          | Whether to show stack traces in error reports |
+| `outputDir`              | `string`  | `./test-results`| Directory where JSON output files will be saved |
+| `generateFix`            | `boolean` | `false`         | Whether to generate AI-powered fix suggestions for failing tests |
+| `categorizeFailures`     | `boolean` | `true`          | Whether to categorize failures by type for better analysis |
+
+### **AI-Powered Fix Suggestions**
+
+To use the GenAI-powered fix suggestion feature:
+
+1. Create a `.env` file in your project root with your Mistral API key:
+   ```
+   MISTRAL_API_KEY=your_key_here
+   ```
+
+2. Enable the `generateFix` option in your configuration:
+   ```typescript
+   reporter: [['playwright-test-reporter', {
+     generateFix: true
+   }]]
+   ```
+
+Fix suggestions will be generated in the `test-results/fixes` directory, with corresponding prompts in `test-results/prompts`.
 
 ### **Team Ownership**
 
@@ -103,16 +127,16 @@ You can specify test ownership by team using annotations:
 ```typescript
 // Using annotations
 test.describe('User authentication', () => {
-    test.use({metadata: {team: 'Frontend'}});
-
-    test('should login successfully', async ({page}) => {
-        // Test implementation
-    });
+  test('should login successfully', {
+    annotation: { type: 'team', description: 'Frontend' }
+  }, async ({ page }) => {
+    // Test implementation
+  });
 });
 
 // Alternatively, by including team name in the test title
-test('[Frontend] should login successfully', async ({page}) => {
-    // Test implementation
+test('[Frontend] should login successfully', async ({ page }) => {
+  // Test implementation
 });
 ```
 
@@ -121,13 +145,13 @@ test('[Frontend] should login successfully', async ({page}) => {
 The reporter includes utilities for working with test history:
 
 ```typescript
-import {HistoryUtils} from 'playwright-test-reporter';
+import { HistoryUtils } from 'playwright-test-reporter';
 
 // Check if a test was failing in the previous run
 const wasFailing = HistoryUtils.wasTestFailingPreviously('test-id-123');
 
 // Compare current failures with previous run
-const {newlyFailing, fixed} = HistoryUtils.compareWithPreviousRun(['test-id-456', 'test-id-789']);
+const { newlyFailing, fixed } = HistoryUtils.compareWithPreviousRun(['test-id-456', 'test-id-789']);
 
 console.log('New failures:', newlyFailing);
 console.log('Fixed tests:', fixed);
@@ -135,18 +159,20 @@ console.log('Fixed tests:', fixed);
 
 ### **JSON Output Files**
 
-The reporter generates the following JSON files in the specified output directory:
+The reporter generates the following JSON files:
 
 - **testSummary.json**: Contains complete test run summary and metrics
 - **testFailures.json**: Detailed information about test failures
 - **.last-run.json**: Status of the last test run for comparison
+- **prompts/*.md**: AI prompts for test failures
+- **fixes/fix-*.md**: AI-generated fix suggestions
 
 These files can be used for:
-
 - CI/CD pipeline integration
 - Test history analysis
 - Trend monitoring and reporting
 - Build pass/fail decisions
+- Automatic PR comments with fix suggestions
 
 ---
 
@@ -175,7 +201,7 @@ Additional Metrics:
    Please ensure to test the skipped scenarios manually before deployment.
 ```
 
-### **Failed Run**
+### **Failed Run with GenAI Suggestions**
 
 ```plaintext
 🚀 Starting test run: 3 tests using 2 workers
@@ -185,6 +211,13 @@ Additional Metrics:
 ⚠️ Payment test was skipped
 
 ❌ 1 of 3 tests failed | 1 passed | 1 skipped | ⏱ Total: 6.18s
+
+🤖 Generating AI-powered fix suggestions...
+Generating fix suggestion for: API test
+✅ Fix suggestion generated:
+  - Prompt: /home/user/project/test-results/prompts/api-test.md
+  - Fix: /home/user/project/test-results/fixes/fix-api-test.md
+AI fix suggestion generation complete
 
 Additional Metrics:
 - Average passed test time: 1.23s
@@ -226,9 +259,11 @@ The package consists of several core components:
 1. **Reporter**: Main entry point that implements Playwright's Reporter interface
 2. **TestUtils**: Utility functions for processing and calculating test metrics
 3. **Logger**: Handles colorized console output formatting
-4. **FileHandler**: Manages writing test results to JSON files
-5. **HistoryUtils**: Provides functionality for test history comparison
-6. **BuildInfoUtils**: Detects CI environment and extracts build information
+4. **GenAIUtils**: Provides AI-powered fix suggestions for failing tests
+5. **FileHandler**: Manages writing test results to JSON files
+6. **HistoryUtils**: Provides functionality for test history comparison
+7. **BuildInfoUtils**: Detects CI environment and extracts build information
+8. **PromptUtils**: Handles test code extraction and prompt generation
 
 ## **🤝 Contributing**
 
@@ -267,5 +302,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## **🙏 Acknowledgments**
 
 - Built with [Playwright](https://playwright.dev/)
-- Inspired by the need for better test reporting in CI/CD pipelines
+- Inspired by the need for better test reporting and automatic debugging in CI/CD pipelines
+- AI-powered fix suggestions powered by Mistral AI
 - Thanks to all contributors who help make this reporter better

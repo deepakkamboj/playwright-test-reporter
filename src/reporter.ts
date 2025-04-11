@@ -1,9 +1,10 @@
 import {Reporter, TestCase, TestResult, FullConfig, Suite} from '@playwright/test/reporter';
 import {colors} from './colors';
-import {TestRecord, ReporterConfig, TestSummary, TestCaseDetails} from './types';
+import {TestRecord, ReporterConfig, TestSummary, TestCaseDetails, TestFailure} from './types';
 import {TestUtils, Logger} from './utils';
 import {FileHandler} from './fileHandler';
 import {BuildInfoUtils} from './buildInfoUtils';
+import {GenAIUtils} from './genaiUtils';
 import * as path from 'path';
 import * as fs from 'fs';
 
@@ -43,6 +44,7 @@ export default class PlaywrightTestReporter implements Reporter {
             timeoutWarningThreshold: config.timeoutWarningThreshold ?? 30,
             showStackTrace: config.showStackTrace ?? true,
             outputDir: config.outputDir ?? './test-results',
+            generateFix: config.generateFix ?? false,
         };
 
         this.outputDir = this._config.outputDir;
@@ -193,7 +195,7 @@ export default class PlaywrightTestReporter implements Reporter {
      * Processes results, displays summary statistics, and sets appropriate exit code.
      * Now properly handles all error conditions including non-test errors.
      */
-    public onEnd(): void {
+    public async onEnd(): Promise<void> {
         const endTime = Date.now();
         const totalTimeSec = (endTime - this._startTime) / 1000;
         const totalTimeDisplay = TestUtils.formatTime(totalTimeSec);
@@ -226,6 +228,11 @@ export default class PlaywrightTestReporter implements Reporter {
             slowestTests: TestUtils.findSlowestTests(this._testRecords, this._config.maxSlowTestsToShow),
             buildInfo,
         };
+
+        // Generate fix suggestions if enabled
+        if (this._config.generateFix && failures.length > 0) {
+            await this._generateFixSuggestions(failures);
+        }
 
         // Log results
         Logger.logSummary(summary);
@@ -357,5 +364,51 @@ export default class PlaywrightTestReporter implements Reporter {
         } catch (error) {
             console.error('Failed to write last run status:', error);
         }
+    }
+
+    /**
+     * Generates AI-powered fix suggestions for test failures
+     * 
+     * @param failures - Array of test failures
+     * @private
+     */
+    private async _generateFixSuggestions(failures: TestFailure[]): Promise<void> {
+        console.log('\n');
+        console.log(`${colors.fgCyan}===============================================${colors.reset}`);
+        console.log(`${colors.fgCyan}🤖 Generating AI-powered fix suggestions...${colors.reset}`);
+        console.log(`${colors.fgCyan}===============================================${colors.reset}`);
+        const sourceCodeCache = new Map<string, string>();
+        
+        for (const failure of failures) {
+            if (!failure.testFile) continue;
+
+            try {
+                console.log(`${colors.fgYellow}Generating fix suggestion for: ${failure.testTitle}${colors.reset}`);
+                
+                // Read the source file
+                if (!sourceCodeCache.has(failure.testFile)) {
+                    const source = fs.readFileSync(failure.testFile, 'utf8');
+                    sourceCodeCache.set(failure.testFile, source);
+                }
+                
+                const result = await GenAIUtils.generateFixSuggestion(failure, sourceCodeCache);
+                
+                if (result) {
+                    console.log(`${colors.fgGreen}✅ Fix suggestion generated:${colors.reset}`);
+                    console.log(`${colors.fgGreen}  - Prompt: ${result.promptPath}${colors.reset}`);
+                    console.log(`${colors.fgGreen}  - Fix: ${result.fixPath}${colors.reset}`);
+                } else {
+                    console.warn(`${colors.fgYellow}⚠️ Could not generate fix suggestion.${colors.reset}`);
+                    console.warn(`${colors.fgYellow}   Check if you have a .env file with MISTRAL_API_KEY in the project root.${colors.reset}`);
+                }
+            } catch (error) {
+                console.error(`${colors.fgRed}❌ Error generating fix suggestion for ${failure.testTitle}: ${error}${colors.reset}`);
+            }
+        }
+        
+        console.log(`${colors.fgCyan}AI fix suggestion generation complete${colors.reset}`);
+        
+        console.log(`${colors.fgCyan}Thank you for using the AI fix suggestion tool!${colors.reset}`);
+        console.log(`${colors.fgCyan}===============================================${colors.reset}`);
     }
 }

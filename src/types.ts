@@ -162,4 +162,6 @@ export interface ReporterConfig {
     showStackTrace?: boolean;
     /** Directory where JSON output files will be saved */
     outputDir?: string;
+    /** Whether to generate AI-powered fix suggestions for failures */
+    generateFix?: boolean;
 }
