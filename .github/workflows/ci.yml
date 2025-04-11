@@ -66,20 +66,3 @@ jobs:
                   path: test-report/
                   retention-days: 30
 
-            - name: Publish Test Report
-              if: always() && github.event_name != 'pull_request'
-              uses: peaceiris/actions-gh-pages@v3
-              with:
-                  github_token: ${{ secrets.GITHUB_TOKEN }}
-                  publish_dir: ./test-report
-                  destination_dir: reports/${{ github.run_number }}
-                  keep_files: true
-
-            - name: Publish Latest Test Report
-              if: always() && github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
-              uses: peaceiris/actions-gh-pages@v3
-              with:
-                  github_token: ${{ secrets.GITHUB_TOKEN }}
-                  publish_dir: ./test-report
-                  destination_dir: reports/latest
-                  keep_files: true
